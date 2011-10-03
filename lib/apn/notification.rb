@@ -37,7 +37,7 @@ module APN
     
     # Ensures at least one of <code>%w(alert badge sound)</code> is present
     def valid?
-      return true if %w(alert badge sound).any?{|key| options.keys.include?(key.to_sym) }
+      return true if %w(alert badge sound content-available).any?{|key| options.keys.include?(key.to_sym) }
       false
     end
     
@@ -63,6 +63,7 @@ module APN
       hsh = {'aps' => {}}
       hsh['aps']['alert'] = opts.delete(:alert).to_s if opts[:alert]
       hsh['aps']['badge'] = opts.delete(:badge).to_i if opts[:badge]
+      hsh['aps']['content-available'] = opts.delete("content-available").to_i if opts["content-available"]
       if sound = opts.delete(:sound)
         hsh['aps']['sound'] = sound.is_a?(TrueClass) ? 'default' : sound.to_s
       end
